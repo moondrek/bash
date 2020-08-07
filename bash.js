@@ -6,15 +6,19 @@ const curl = require("./curl");
 process.stdout.write("prompt > ");
 process.stdin.on("data", (data) => {
   const cmd = data.toString().trim();
+  const done = (output) => {
+    process.stdout.write(output);
+    process.stdout.write("\nprompt > ");
+  };
 
   if (cmd === "pwd") {
-    pwd();
+    pwd(done);
   } else if (cmd === "ls") {
-    ls();
+    ls(done);
   } else if (cmd.split(" ")[0] === "cat") {
-    cat(cmd.split(" ")[1]);
+    cat(done, cmd.split(" ")[1]);
   } else if (cmd.split(" ")[0] === "curl") {
-    curl(cmd.split(" ")[1]);
+    curl(done, cmd.split(" ")[1]);
   } else {
     process.stdout.write("You typed : " + cmd + "\n");
   }
